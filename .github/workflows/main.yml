@@ -3,7 +3,7 @@ name: Deploy ASP.NET Core
 on:
   push:
     branches:
-      - master-notyet
+      - master
 
 env:
   AZURE_WEBAPP_NAME: awacsbgt2020
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       
-      - uses: actions/checkout
+      - uses: actions/checkout@master
 
       - name: Login using Azure CLI
         uses: azure/login@v1
