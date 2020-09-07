@@ -1,0 +1,39 @@
+name: Deploy ASP.NET Core
+
+on:
+  push:
+    branches:
+      - master-notyet
+
+env:
+  AZURE_WEBAPP_NAME: awacsbgt2020
+  AZURE_WEBAPP_PATH: '.'
+  DOTNET_VERSION: '2.2.101' #Old but hey .. backwards compat
+
+jobs:
+  build-and-boogie:
+    runs-on: ubuntu-20.04
+    steps:
+      
+      - uses: actions/checkout
+
+      - name: Login using Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CRDS }}
+
+      - name: Setup DOTNET Core
+        uses: actions/setup-dotnet@v1
+        with:
+           dotnet-version: ${{ env.DOTNET_VERSION }}
+           
+      - name: dotnet build + publish
+        run: |
+          dotnet build --configuration release
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PATH }}/myapp'
+
+      - name: Deploy to App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          packaage: '${{ env.AZURE_WEBAPP_PATH }}/myapp'

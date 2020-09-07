@@ -1,2 +1,3 @@
 # dotnetcore-webapp
-GitHub Action deploys to Azure Web App
+
+Demo deploying to Azure App Service - code
